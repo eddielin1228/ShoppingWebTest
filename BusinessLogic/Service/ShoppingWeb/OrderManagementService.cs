@@ -30,18 +30,18 @@ namespace BusinessLogic.Service.ShoppingWeb
             _dbContext.Configuration.LazyLoadingEnabled = false;
             base.OrderMainRepository = new GenericRepository<OrderMain>(_dbContext);
             base.OrderDetailRepository = new GenericRepository<OrderDetail>(_dbContext);
-
+            base.ProductMainRepository = new GenericRepository<ProductMain>(_dbContext);
         }
 
         /// <summary>
         /// Repository DI
         /// </summary>
         /// <param name="accountRepository">AccountRepository</param>
-        public OrderManagementService(IRepository<OrderMain> orderMainRepository, IRepository<OrderDetail> orderDetailRepository)
+        public OrderManagementService(IRepository<OrderMain> orderMainRepository, IRepository<OrderDetail> orderDetailRepository, IRepository<ProductMain> productRepository)
         {
             base.OrderMainRepository = orderMainRepository;
             base.OrderDetailRepository = orderDetailRepository;
-
+            base.ProductMainRepository = productRepository;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace BusinessLogic.Service.ShoppingWeb
                 OrderUser = x.OrderUser,
                 TotalPrice = x.TotalPrice,
                 CreateTime = x.CreateTime,
-                orderItems = GetOrderDetailList(x.OrderId)
+                OrderItems = GetOrderDetailList(x.OrderId)
             }).ToList();
         }
         /// <summary>
@@ -75,7 +75,7 @@ namespace BusinessLogic.Service.ShoppingWeb
                 OrderUser = query.OrderUser,
                 TotalPrice = query.TotalPrice,
                 CreateTime = query.CreateTime,
-                orderItems = GetOrderDetailList(model.OrderId)
+                OrderItems = GetOrderDetailList(model.OrderId)
             };
 
             return orderViewModel;
@@ -96,7 +96,7 @@ namespace BusinessLogic.Service.ShoppingWeb
                 {
                     OrderId = x.OrderId,
                     ProductId = x.ProductId,
-                    Quantity = x.Quantity,
+                    Count = x.Quantity,
                     Price = x.Price,
                 };
                 orderDetailModels.Add(order);
@@ -112,33 +112,51 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <returns></returns>
         public ResponseMessage Create(OrderViewModel model)
         {
-            ResponseMessage result = new ResponseMessage();
-
-            OrderMain orderMain = new OrderMain()
+            ResponseMessage result = new ResponseMessage()
             {
-                OrderId = model.OrderId,
-                TotalPrice = model.TotalPrice,
-                OrderUser = model.OrderUser,
-                CreateTime = DateTime.Now,
-                CreateUser = model.OrderUser
+                success = true
             };
 
+            model.OrderItems.ForEach(x =>
+            {
+                var product = base.ProductMainRepository.Find(p => p.ProductId == x.ProductId);
+                if ((product.Quantity - x.Count) < 0)
+                {
+                    result.success = false;
+                }
+            });
 
-            result.success = base.OrderMainRepository.Add(orderMain);
             if (result.success)
             {
-                model.orderItems.ForEach(x =>
+                OrderMain orderMain = new OrderMain()
                 {
+                    OrderId = model.OrderId,
+                    TotalPrice = model.TotalPrice,
+                    OrderUser = model.OrderUser,
+                    CreateTime = DateTime.Now,
+                    CreateUser = model.OrderUser
+                };
+
+                result.success = base.OrderMainRepository.Add(orderMain);
+            }
+
+            if (result.success)
+            {
+                model.OrderItems.ForEach(x =>
+                {
+                    var product = base.ProductMainRepository.Find(p => p.ProductId == x.ProductId);
+                    product.Quantity -= x.Count;
                     OrderDetail orderDetail = new OrderDetail
                     {
                         OrderId = model.OrderId,
                         ProductId = x.ProductId,
-                        Quantity = x.Quantity,
+                        Quantity = x.Count,
                         Price = x.Price,
                         CreateTime = DateTime.Now,
                         CreateUser = model.OrderUser
                     };
                     base.OrderDetailRepository.Add(orderDetail);
+                    base.ProductMainRepository.Update(product);
                 });
             }
 

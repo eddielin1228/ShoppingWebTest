@@ -90,7 +90,6 @@
     <Compile Include="Interface\IUserDataRepository.cs" />
     <Compile Include="Interface\IProductMainRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\ProductMainRepository.cs" />
     <Compile Include="Service\SampleSystem\SampleService.cs" />
     <Compile Include="Infrastructure\Log.cs" />
     <Compile Include="Infrastructure\EmailSender.cs" />

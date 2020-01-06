@@ -18,17 +18,29 @@ namespace ITSWeb.Controllers
         {
             productManagementService = new ProductManagementService();
         }
+        /// <summary>
+        /// 商品管理 列表
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             ViewBag.ProductList = productManagementService.GetAll();
 
             return View();
         }
-
+        /// <summary>
+        /// 商品管理 新增頁面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
+        /// <summary>
+        /// 新增商品
+        /// </summary>
+        /// <param name="model">商品資料</param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public ActionResult CreateProduct([FromBody]ProductViewModel model)
         {
@@ -40,6 +52,11 @@ namespace ITSWeb.Controllers
             ResponseMessage result = productManagementService.Create(model);
             return Json(result);
         }
+        /// <summary>
+        /// 修改 商品資訊 頁面
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public ActionResult Detail(string productId)
         {
             ProductViewModel model = new ProductViewModel()
@@ -50,6 +67,12 @@ namespace ITSWeb.Controllers
 
             return View();
         }
+
+        /// <summary>
+        /// 修改商品資訊
+        /// </summary>
+        /// <param name="model">商品資料</param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public ActionResult UpdateProduct([FromBody]ProductViewModel model)
         {

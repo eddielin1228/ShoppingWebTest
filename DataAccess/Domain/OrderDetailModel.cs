@@ -19,11 +19,12 @@ namespace DataAccess.Domain
         /// <summary>
         /// 數量
         /// </summary>
-        public int Quantity { get; set; }
+        public int Count { get; set; }
         /// <summary>
         /// 單價
         /// </summary>
         public int Price { get; set; }
+
 
 
     }

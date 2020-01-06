@@ -27,6 +27,6 @@ namespace DataAccess.Domain
         /// <summary>
         /// 訂單明細
         /// </summary>
-        public List<OrderDetailModel> orderItems { get; set; }
+        public List<OrderDetailModel> OrderItems { get; set; }
     }
 }

@@ -16,16 +16,29 @@ namespace ITSWeb.Controllers
         {
             orderManagementService = new OrderManagementService();
         }
+        /// <summary>
+        /// 訂單列表(未實作)
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             ViewBag.ProductList = orderManagementService.GetAll();
             return View();
         }
-
+        /// <summary>
+        /// 訂單畫面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
+
+        /// <summary>
+        /// 新增訂單
+        /// </summary>
+        /// <param name="model">訂單資料</param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public ActionResult CreateOrder([FromBody]OrderViewModel model)
         {

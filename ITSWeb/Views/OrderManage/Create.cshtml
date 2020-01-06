@@ -1,0 +1,53 @@
+﻿@using Newtonsoft.Json
+@{
+    ViewBag.Title = "商品列表";
+}
+
+<div id="app">
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>商品名稱</th>
+                    <th>商品金額</th>
+                    <th>購買數量</th>
+                    <th>總計</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in productList">
+                    <td>{{item.ProductName}}</td>
+                    <td>{{item.Price}}</td>
+                    <td>{{item.Count}}</td>
+                    <td>{{item.Count*item.Price}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>總計</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{totalPrice}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <input type="button" value="結帳" @@click="chockout" />
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        var injectObj = {
+            urls: {
+                createOrderPath:'@Url.Action("CreateOrder","OrderManage")'
+            },
+            productList:JSON.parse(window.localStorage.getItem("cartList"))
+           
+        };
+    </script>
+
+    <script src="~/js/OrderManage/create.js" asp-src-include="true"></script>
+}

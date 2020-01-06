@@ -1,0 +1,40 @@
+﻿@using Newtonsoft.Json
+@{
+    ViewBag.Title = "商品編輯";
+}
+<div id="app">
+    <div>
+        <label>商品名稱</label>
+        <input type="text" v-model="filter.name" />
+    </div>
+    <div>
+        <label>商品價格</label>
+        <input type="text" v-model="filter.price" />
+    </div>
+    <div>
+        <label>商品數量</label>
+        <input type="text" v-model="filter.quantity" />
+    </div>
+    <div>
+        <label>是否上架</label>
+        <input type="checkbox" v-model="filter.canSale" />
+    </div>
+    <input type="button" value="送出" @@click="updatePath" />
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        var injectObj = {
+            urls: {
+                createProduct: '@Url.Action("CreateProduct","ProductManage")',
+                updateProduct: '@Url.Action("UpdateProduct","ProductManage")',
+            },
+            productList: JSON.parse('@Html.Raw(JsonConvert.SerializeObject(ViewBag.ProductList))'),
+
+        };
+    </script>
+
+    <script src="~/js/ProductManage/detail.js" asp-src-include="true"></script>
+}

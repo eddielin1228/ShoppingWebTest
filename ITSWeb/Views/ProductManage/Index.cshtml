@@ -1,0 +1,45 @@
+﻿@using Newtonsoft.Json
+@{
+    ViewBag.Title = "商品管理首頁";
+}
+
+<div id="app">
+    <a href="@Url.Action("Create","ProductManage")">新增商品</a>
+
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                <th>商品名稱</th>
+                <th>商品數量</th>
+                <th>商品金額</th>
+                <th>是否上架</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in productList">
+                    <td><a href="#" @@click="detailPath(item.ProductId)">{{item.ProductName}}</a></td>
+                    <td>{{item.Quantity}}</td>
+                    <td>{{item.Price}}</td>
+                    <td>{{item.CanSale}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        var injectObj = {
+            urls: {
+                detailPath:'@Url.Action("Detail","ProductManage")'
+            },
+            productList: JSON.parse('@Html.Raw(JsonConvert.SerializeObject(ViewBag.ProductList))'),
+        };
+    </script>
+
+    <script src="~/js/ProductManage/index.js" asp-src-include="true"></script>
+}

@@ -12,7 +12,7 @@ using Repository;
 namespace BusinessLogic.Service.ShoppingWeb
 {
     /// <summary>
-    /// 功能服務(範例)
+    /// 商品管理功能服務
     /// </summary>
     public class ProductManagementService : ShoppingWebDataBase, IProductManagementService
     {
@@ -34,7 +34,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// Repository DI
         /// </summary>
-        /// <param name="accountRepository">AccountRepository</param>
+        /// <param name="productMainRepository"></param>
         public ProductManagementService(IRepository<ProductMain> productMainRepository)
         {
             base.ProductMainRepository = productMainRepository;
@@ -59,8 +59,14 @@ namespace BusinessLogic.Service.ShoppingWeb
                 CanSale = x.CanSale,
                 Count = 0,
                 Quantity = x.Quantity
-            }).ToList();
+            }).ToList();        
         }
+
+        /// <summary>
+        /// 取得單一商品資料
+        /// </summary>
+        /// <param name="model">商品資料</param>
+        /// <returns></returns>
         public ProductViewModel Get(ProductViewModel model)
         {
             var query =  base.ProductMainRepository.Find(x => x.ProductId== model.ProductId);
@@ -77,7 +83,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 建立新資料
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">商品資料</param>
         /// <returns></returns>
         public ResponseMessage Create(ProductViewModel model)
         {
@@ -99,7 +105,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 修改資料
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">商品資料</param>
         /// <returns></returns>
         public ResponseMessage Update(ProductViewModel model)
         {
@@ -116,7 +122,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 刪除資料
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">商品資料</param>
         /// <returns></returns>
         public ResponseMessage Delete(ProductViewModel model)
         {

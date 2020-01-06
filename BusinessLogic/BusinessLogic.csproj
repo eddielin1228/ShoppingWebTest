@@ -95,7 +95,6 @@
     <Compile Include="Infrastructure\EmailSender.cs" />
     <Compile Include="Service\ShoppingWeb\IOrderManagementService.cs" />
     <Compile Include="Service\ShoppingWeb\IProductManagementService.cs" />
-    <Compile Include="Service\ShoppingWeb\ProductMainService.cs" />
     <Compile Include="Service\ShoppingWeb\OrderManagementService.cs" />
     <Compile Include="Service\ShoppingWeb\ProductManagementService.cs" />
   </ItemGroup>

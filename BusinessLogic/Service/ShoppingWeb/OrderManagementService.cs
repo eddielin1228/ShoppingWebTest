@@ -22,7 +22,9 @@ namespace BusinessLogic.Service.ShoppingWeb
 
         protected readonly DbContext _dbContext;
 
-
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public OrderManagementService()
         {
             _dbContext = new ShoppingWebContext();
@@ -36,16 +38,18 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// Repository DI
         /// </summary>
-        /// <param name="accountRepository">AccountRepository</param>
+        /// <param name="orderMainRepository"></param>
+        /// <param name="orderDetailRepository"></param>
+        /// <param name="productRepository"></param>
         public OrderManagementService(IRepository<OrderMain> orderMainRepository, IRepository<OrderDetail> orderDetailRepository, IRepository<ProductMain> productRepository)
-        {
+        { 
             base.OrderMainRepository = orderMainRepository;
             base.OrderDetailRepository = orderDetailRepository;
             base.ProductMainRepository = productRepository;
         }
 
         /// <summary>
-        /// 取得全部資料
+        /// 取得全部訂單資料
         /// </summary>
         /// <returns></returns>
         public List<OrderViewModel> GetAll()
@@ -62,7 +66,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 取得單一訂單
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">訂單資料</param>
         /// <returns></returns>
         public OrderViewModel Get(OrderViewModel model)
         {
@@ -83,7 +87,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 取得訂單明細
         /// </summary>
-        /// <param name="orderId"></param>
+        /// <param name="orderId">訂單ID</param>
         /// <returns></returns>
         private List<OrderDetailModel> GetOrderDetailList(string orderId)
         {
@@ -108,7 +112,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 建立新資料
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">訂單資料</param>
         /// <returns></returns>
         public ResponseMessage Create(OrderViewModel model)
         {

@@ -263,6 +263,10 @@
   <ItemGroup>
     <Content Include="404.html" />
     <Content Include="500.html" />
+    <Content Include="App_Data\ShoppingWeb.mdf" />
+    <Content Include="App_Data\ShoppingWeb_log.ldf">
+      <DependentUpon>ShoppingWeb.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -362,7 +366,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>

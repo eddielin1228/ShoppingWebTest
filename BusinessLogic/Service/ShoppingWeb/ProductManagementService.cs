@@ -122,13 +122,24 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 刪除資料
         /// </summary>
-        /// <param name="model">商品資料</param>
+        /// <param name="productId">商品ID</param>
         /// <returns></returns>
-        public ResponseMessage Delete(ProductViewModel model)
+        public ResponseMessage DeleteProduct(string productId)
         {
-            ResponseMessage result = new ResponseMessage();
-            var oldData = base.ProductMainRepository.Find(x => x.ProductId == model.ProductId);
-            result.success = base.ProductMainRepository.Remove(oldData);
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
+            try
+            {
+                var product = ProductMainRepository.Find(x => x.ProductId == productId);
+                result.success = ProductMainRepository.Remove(product);
+            }
+            catch (Exception ex)
+            {
+                base.Log.Error(ex);
+                base.Log.SendException("BusinessLogic.Service.ShoppingWeb.OrderManagementService.DeleteProduct()", ex);
+            }
             return result;
         }
     }

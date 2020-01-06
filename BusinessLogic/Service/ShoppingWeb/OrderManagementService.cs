@@ -42,7 +42,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <param name="orderDetailRepository"></param>
         /// <param name="productRepository"></param>
         public OrderManagementService(IRepository<OrderMain> orderMainRepository, IRepository<OrderDetail> orderDetailRepository, IRepository<ProductMain> productRepository)
-        { 
+        {
             base.OrderMainRepository = orderMainRepository;
             base.OrderDetailRepository = orderDetailRepository;
             base.ProductMainRepository = productRepository;
@@ -52,7 +52,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// 取得全部訂單資料
         /// </summary>
         /// <returns></returns>
-        public List<OrderViewModel> GetAll()
+        public List<OrderViewModel> GetAllOrder()
         {
             return base.OrderMainRepository.FindAll().Select(x => new OrderViewModel
             {
@@ -63,27 +63,7 @@ namespace BusinessLogic.Service.ShoppingWeb
                 OrderItems = GetOrderDetailList(x.OrderId)
             }).ToList();
         }
-        /// <summary>
-        /// 取得單一訂單
-        /// </summary>
-        /// <param name="model">訂單資料</param>
-        /// <returns></returns>
-        public OrderViewModel Get(OrderViewModel model)
-        {
 
-            var query = base.OrderMainRepository.Find(x => x.OrderId == model.OrderId);
-
-            OrderViewModel orderViewModel = new OrderViewModel()
-            {
-                OrderId = query.OrderId,
-                OrderUser = query.OrderUser,
-                TotalPrice = query.TotalPrice,
-                CreateTime = query.CreateTime,
-                OrderItems = GetOrderDetailList(model.OrderId)
-            };
-
-            return orderViewModel;
-        }
         /// <summary>
         /// 取得訂單明細
         /// </summary>
@@ -114,7 +94,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// </summary>
         /// <param name="model">訂單資料</param>
         /// <returns></returns>
-        public ResponseMessage Create(OrderViewModel model)
+        public ResponseMessage CreateOrder(OrderViewModel model)
         {
             ResponseMessage result = new ResponseMessage()
             {
@@ -163,28 +143,7 @@ namespace BusinessLogic.Service.ShoppingWeb
                     base.ProductMainRepository.Update(product);
                 });
             }
-
             return result;
-        }
-
-        /// <summary>
-        /// 修改資料
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ResponseMessage Update(OrderViewModel model)
-        {
-            throw new Exception();
-        }
-
-        /// <summary>
-        /// 刪除資料
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public ResponseMessage Delete(OrderViewModel model)
-        {
-            throw new Exception();
         }
     }
 }

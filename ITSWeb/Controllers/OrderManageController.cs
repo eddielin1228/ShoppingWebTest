@@ -22,7 +22,7 @@ namespace ITSWeb.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            ViewBag.ProductList = orderManagementService.GetAll();
+            ViewBag.ProductList = orderManagementService.GetAllOrder();
             return View();
         }
         /// <summary>
@@ -42,13 +42,21 @@ namespace ITSWeb.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult CreateOrder([FromBody]OrderViewModel model)
         {
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
             if (model == null)
             {
-                return Json("");
+                result.success = false;
             }
-            model.OrderId = Guid.NewGuid().ToString();
-            model.OrderUser = base.UserSerivce.CurrentUser.Identity.Name;
-            ResponseMessage result = orderManagementService.Create(model);
+            if (result.success)
+            {
+                model.OrderId = Guid.NewGuid().ToString();
+                model.OrderUser = base.UserSerivce.CurrentUser.Identity.Name;
+                result = orderManagementService.CreateOrder(model);
+            }
+
             return Json(result);
         }
     }

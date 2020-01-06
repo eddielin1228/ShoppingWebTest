@@ -42,7 +42,7 @@ namespace ITSWeb.Controllers
         /// <param name="model">商品資料</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public ActionResult CreateProduct([FromBody]ProductViewModel model)
+        public ActionResult CreateProduct(ProductViewModel model)
         {
             if (model == null)
             {
@@ -81,6 +81,23 @@ namespace ITSWeb.Controllers
                 return Json("");
             }
             ResponseMessage result = productManagementService.Update(model);
+            return Json(result);
+        }
+
+        public ActionResult DeleteProduct([FromBody]ProductViewModel model)
+        {
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
+            if (string.IsNullOrWhiteSpace(model.ProductId))
+            {
+                result.success = false;
+            }
+            if (result.success)
+            {
+               result = productManagementService.DeleteProduct(model.ProductId);
+            }
             return Json(result);
         }
     }

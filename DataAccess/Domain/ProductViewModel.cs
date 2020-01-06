@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DataAccess.Domain
 {
@@ -36,6 +38,10 @@ namespace DataAccess.Domain
         /// 是否上架
         /// </summary>
         public bool CanSale { get; set; }
+        /// <summary>
+        /// 上傳附件(file)
+        /// </summary>
+        public IFormFile FileUpload { get; set; }
 
 
     }

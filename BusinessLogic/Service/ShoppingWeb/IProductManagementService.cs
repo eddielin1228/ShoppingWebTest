@@ -13,11 +13,11 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <returns></returns>
         ResponseMessage Create(ProductViewModel model);
         /// <summary>
-        /// 刪除資料
+        /// 刪除商品資料
         /// </summary>
-        /// <param name="model">商品資料</param>
+        /// <param name="productId">商品Id</param>
         /// <returns></returns>
-        ResponseMessage Delete(ProductViewModel model);
+        ResponseMessage DeleteProduct(string productId);
         /// <summary>
         /// 取得單一商品資料
         /// </summary>

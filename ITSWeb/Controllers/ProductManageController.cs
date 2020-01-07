@@ -51,6 +51,7 @@ namespace ITSWeb.Controllers
             if (model == null)
             {
                 result.success = false;
+                result.Message = "沒有商品資料";
             }
 
             if (result.success)
@@ -106,6 +107,7 @@ namespace ITSWeb.Controllers
             if (string.IsNullOrWhiteSpace(model.ProductId))
             {
                 result.success = false;
+                result.Message = "沒有商品ID";
             }
             if (result.success)
             {

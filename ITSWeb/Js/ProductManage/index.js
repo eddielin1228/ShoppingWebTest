@@ -2,24 +2,17 @@
     var app = new Vue({
         el: '#app',
         data: {
-            filter: {
-                name: '',
-                price: '',
-                quantity: '',
-                canSale:true,
-                address:''
-            },
             urls: {
                 createProduct: window.injectObj.urls.createProduct || '',
                 detailPath: window.injectObj.urls.detailPath || '',
                 deletePath: window.injectObj.urls.deletePath || ''
             },
-            productList:window.injectObj.productList,
+            productList:window.injectObj.productList
         },
         methods: {
             /*
-            * change table page
-            * @param {} val: 頁碼
+            * 轉頁至商品修改頁
+            * @param {} productId: 商品ID
             */
             detailPath: function (productId) {
                 var me = this;
@@ -30,6 +23,9 @@
                 };
                 location.href = me.urls.detailPath+'?productId='+ productId;
             },
+            /*
+             * 刪除商品
+             */
             deleteProduct: function(productId) {
                 var me = this;
                 var msg = {
@@ -49,11 +45,7 @@
                     msg.message = '資料傳遞發生錯誤，請稍後再試！';
                     me.$message(msg);
                 });
-            },
-            /*
-             * get detail
-             * @param {} row 
-             */
+            }
         }
     });
 })();

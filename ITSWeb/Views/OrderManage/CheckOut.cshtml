@@ -32,7 +32,7 @@
             </tfoot>
         </table>
 
-        <input type="button" value="結帳" @@click="chockout" />
+        <input type="button" value="結帳" @@click="checkout" />
     </div>
 </div>
 
@@ -42,12 +42,13 @@
 
         var injectObj = {
             urls: {
-                createOrderPath:'@Url.Action("CreateOrder","OrderManage")'
+                createOrderPath: '@Url.Action("CreateOrder","OrderManage")',
+                homePath: '@Url.Action("Index","Home")'
             },
             productList:JSON.parse(window.localStorage.getItem("cartList"))
            
         };
     </script>
 
-    <script src="~/js/OrderManage/create.js" asp-src-include="true"></script>
+    <script src="~/js/OrderManage/checkOut.js" asp-src-include="true"></script>
 }

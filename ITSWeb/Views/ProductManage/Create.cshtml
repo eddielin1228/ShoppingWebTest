@@ -22,9 +22,6 @@
             <div class="input-title">檔案上傳</div>
             <div class="input-group">
                 <label class="file"><input id="fileUpload" v-on:change="onUploadChange($event)" onchange="this.parentNode.setAttribute('title', this.value.replace(/^.*[\\/]/, ''))" type="file"></label>
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" @@click="clearFile()">清除</button>
-                </span>
             </div>
         </div>
         <input type="button" value="送出" @@click="createData" />
@@ -37,7 +34,8 @@
         var injectObj = {
             urls: {
                 createProduct: '@Url.Action("CreateProduct","ProductManage")',
-            },
+                productManagePath: '@Url.Action("Index","ProductManage")'
+            }
         };
     </script>
 

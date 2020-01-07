@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="Base\ShoppingWebDataBase.cs" />
     <Compile Include="Base\SampleDataBase.cs" />
-    <Compile Include="Helps\CoordinateConversion.cs" />
     <Compile Include="Interface\EmailSenderBase.cs" />
     <Compile Include="Interface\ILog.cs" />
     <Compile Include="Interface\IOrderDetailRepository.cs" />

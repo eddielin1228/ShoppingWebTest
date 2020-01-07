@@ -219,7 +219,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -291,7 +290,7 @@
     <Content Include="Js\Art\Readme.txt" />
     <Content Include="Js\Home\cart.js" />
     <Content Include="Js\Home\index.js" />
-    <Content Include="Js\OrderManage\create.js" />
+    <Content Include="Js\OrderManage\checkOut.js" />
     <Content Include="Js\ProductManage\detail.js" />
     <Content Include="Js\ProductManage\index.js" />
     <Content Include="Js\ProductManage\create.js" />
@@ -359,7 +358,7 @@
     <Content Include="Views\ProductManage\Index.cshtml" />
     <Content Include="Views\ProductManage\Detail.cshtml" />
     <Content Include="Views\Home\Cart.cshtml" />
-    <Content Include="Views\OrderManage\Create.cshtml" />
+    <Content Include="Views\OrderManage\CheckOut.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

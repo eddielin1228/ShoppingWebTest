@@ -10,7 +10,6 @@
                 <tr>
                     <th>是否訂購</th>
                     <th>商品名稱</th>
-                    <th>商品數量</th>
                     <th>商品金額</th>
                     <th>購買數量</th>
                 </tr>
@@ -19,13 +18,11 @@
                 <tr v-for="item in productList">
                     <td><input type="checkbox" v-model="item.isBuy" /></td>
                     <td>{{item.ProductName}}</td>
-                    <td>{{item.Quantity}}</td>
                     <td>{{item.Price}}</td>
                     <td><input type="number" v-model="item.Count" /></td>
                 </tr>
             </tbody>
         </table>
-        <input type="button" value="更新購物車" @@click="addCart" />
         <input type="button" value="刪除購物車" @@click="deleteCart" />
         <input type="button" value="結帳" @@click="checkoutPath" />
     </div>
@@ -37,8 +34,7 @@
 
         var injectObj = {
             urls: {
-                detailPath: '@Url.Action("Detail","ProductManage")',
-                checkoutPath:'@Url.Action("Create","OrderManage")'
+                checkoutPath:'@Url.Action("CheckOut","OrderManage")'
             },
             productList:JSON.parse(window.localStorage.getItem("cartList"))
 

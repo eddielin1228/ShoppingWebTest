@@ -11,20 +11,19 @@
             },
             urls: {
                 updateProduct: window.injectObj.urls.updateProduct || '',
-                detailPath: window.injectObj.urls.detailPath || ''
+                detailPath: window.injectObj.urls.detailPath || '',
+                productManagePath: window.injectObj.urls.productManagePath
             },
             productList: window.injectObj.productList,
             formData: new FormData()
 
         },
         methods: {
+            /*
+             * 更新商品資料
+             */
             updatePath: function () {
                 var me = this;
-                var msg = {
-                    showClose: true,
-                    message: '系統運作有誤，請重新操作或請聯繫維運人員',
-                    type: 'warning'
-                };
                 var formData = me.formData;
                 formData.append('ProductId', me.productList.ProductId);
                 formData.append('ProductName', me.filter.name);
@@ -35,19 +34,19 @@
                 window.axios.post(me.urls.updateProduct,
                     formData
                 ).then(function (response) {
-                    me.resultData = response.data.users;
-                    me.pagination.pageSize = response.data.pageSize;
-                    me.pagination.currentPage = 1;
-                    me.pagination.total = response.data.tableRowTotal;
-                    me.domOperation.screenLoading = false;
+                    if (response.data.success) {
+                        setTimeout(function () { location.href = me.urls.productManagePath; }, 1000);
+                    } else {
+                        alert(response.data.message);
+                    }
                 }).catch(function (response) {
                     console.log(response);
-                    me.domOperation.screenLoading = false;
-                    msg.message = '資料傳遞發生錯誤，請稍後再試！';
-                    me.$message(msg);
+                    alert("資料傳遞發生錯誤，請稍後再試！");
                 });
-
             },
+            /*
+            * 檔案上傳 處理
+            */
             onUploadChange(event) {
                 var file = event.target.files[0];
                 var me = this;

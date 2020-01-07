@@ -2,45 +2,39 @@
     var app = new Vue({
         el: '#app',
         data: {
-            filter: {
-                isBuy:false,
-                name: '',
-                price: '',
-                quantity: '',
-                canSale:true,
-                address:''
-            },
-            cartList:[],
+            cartList: [],
             urls: {
-                createProduct: window.injectObj.urls.createProduct || '',
                 detailPath: window.injectObj.urls.detailPath || ''
             },
-            productList:window.injectObj.productList,
+            productList: window.injectObj.productList,
         },
         methods: {
             /*
-            * change table page
-            * @param {} val: 頁碼
+            * 新增購物車
             */
-            detailPath: function (productId) {
-                var me = this;
-                var msg = {
-                    showClose: true,
-                    message: '系統運作有誤，請重新操作或請聯繫維運人員',
-                    type: 'warning'
-                };
-                location.href = me.urls.detailPath+'?productId='+ productId;
-            },
             addCart: function () {
                 var me = this;
+                var canAddCart = true;
                 me.productList.forEach(x => {
-                    if (x.isBuy && (x.Count > 0 && x.Count<=x.Quantity)) {
-                        me.cartList.push(x);
+                    if (x.isBuy) {
+                        if (x.Count > 0 && x.Count <= x.Quantity) {
+                            me.cartList.push(x);
+                        } else {
+                            canAddCart = false;
+                        }
                     }
                 });
-                window.localStorage.setItem("cartList", JSON.stringify(me.cartList).toString());
-                setTimeout(function () { location.reload(); }, 1000);
-                
+                console.log(me.cartList);
+                console.log(canAddCart);
+                if (canAddCart) {
+                    window.localStorage.setItem("cartList", JSON.stringify(me.cartList).toString());
+                    alert("已加入購物車");
+                    setTimeout(function () { location.reload(); }, 1000);
+                } else {
+                    alert("訂購數量不可為0或大於庫存數量");
+                }
+
+
             }
         }
     });

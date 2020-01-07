@@ -91,6 +91,7 @@ namespace BusinessLogic.Service.ShoppingWeb
                     if ((product.Quantity - x.Count) < 0)
                     {
                         result.success = false;
+                        result.Message = "訂購數量大於庫存數量";
                     }
                 });
 
@@ -106,6 +107,10 @@ namespace BusinessLogic.Service.ShoppingWeb
                     };
 
                     result.success = base.OrderMainRepository.Add(orderMain);
+                    if (!result.success)
+                    {
+                        result.Message = "訂單成立失敗";
+                    }
                 }
 
                 if (result.success)

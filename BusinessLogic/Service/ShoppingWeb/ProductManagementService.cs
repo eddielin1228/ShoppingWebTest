@@ -120,6 +120,10 @@ namespace BusinessLogic.Service.ShoppingWeb
                     };
 
                     result.success = base.ProductMainRepository.Add(product);
+                    if (!result.success)
+                    {
+                        result.Message = "商品建立失敗";
+                    }
                 }
             }
             catch (Exception ex)
@@ -158,6 +162,10 @@ namespace BusinessLogic.Service.ShoppingWeb
                     oldData.Address = model.Address;
                 }
                 result.success = base.ProductMainRepository.Update(oldData);
+                if (!result.success)
+                {
+                    result.Message = "商品修改失敗";
+                }
             }
             catch (Exception ex)
             {
@@ -183,6 +191,10 @@ namespace BusinessLogic.Service.ShoppingWeb
             {
                 var product = ProductMainRepository.Find(x => x.ProductId == productId);
                 result.success = ProductMainRepository.Remove(product);
+                if (!result.success)
+                {
+                    result.Message = "商品刪除失敗";
+                }
             }
             catch (Exception ex)
             {

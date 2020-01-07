@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ITSWeb.Controllers
 {
+    [System.Web.Mvc.Authorize(Roles = "Admin, User")]
     public class OrderManageController : BaseController
     {
         IOrderManagementService orderManagementService;
@@ -20,7 +21,7 @@ namespace ITSWeb.Controllers
         /// 訂單畫面
         /// </summary>
         /// <returns></returns>
-        public ActionResult Create()
+        public ActionResult CheckOut()
         {
             return View();
         }
@@ -40,6 +41,7 @@ namespace ITSWeb.Controllers
             if (model == null)
             {
                 result.success = false;
+                result.Message = "沒有訂單資料";
             }
             if (result.success)
             {

@@ -39,9 +39,13 @@ namespace DataAccess.Domain
         /// </summary>
         public bool CanSale { get; set; }
         /// <summary>
+        /// 圖片路徑
+        /// </summary>
+        public string Address { get; set; }
+        /// <summary>
         /// 上傳附件(file)
         /// </summary>
-        public IFormFile FileUpload { get; set; }
+        public HttpPostedFileBase FileUpload { get; set; }
 
 
     }

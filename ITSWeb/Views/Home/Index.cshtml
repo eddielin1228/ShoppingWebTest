@@ -9,6 +9,7 @@
             <thead>
                 <tr>
                     <th>是否訂購</th>
+                    <th>商品圖片</th>
                     <th>商品名稱</th>
                     <th>商品數量</th>
                     <th>商品金額</th>
@@ -18,14 +19,15 @@
             <tbody>
                 <tr v-for="item in productList">
                     <td><input type="checkbox" v-model="item.isBuy" /></td>
+                    <td><img :src="item.Address" width="100px" height="100px" /></td>
                     <td>{{item.ProductName}}</td>
                     <td>{{item.Quantity}}</td>
                     <td>{{item.Price}}</td>
-                    <td><input type="number" v-model="item.Count"/></td>
+                    <td><input type="number" v-model="item.Count" /></td>
                 </tr>
             </tbody>
         </table>
-        <input type="button" value="加入購物車" @@click="addCart"/>
+        <input type="button" value="加入購物車" @@click="addCart" />
     </div>
 </div>
 

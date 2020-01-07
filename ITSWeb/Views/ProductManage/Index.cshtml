@@ -11,18 +11,22 @@
         <table class="table">
             <thead>
                 <tr>
-                <th>商品名稱</th>
-                <th>商品數量</th>
-                <th>商品金額</th>
-                <th>是否上架</th>
+                    <th>商品圖片</th>
+                    <th>商品名稱</th>
+                    <th>商品數量</th>
+                    <th>商品金額</th>
+                    <th>是否上架</th>
+                    <th>刪除商品</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="item in productList">
+                    <td><img :src="item.Address" width="100px" height="100px" /></td>
                     <td><a href="#" @@click="detailPath(item.ProductId)">{{item.ProductName}}</a></td>
                     <td>{{item.Quantity}}</td>
                     <td>{{item.Price}}</td>
                     <td>{{item.CanSale}}</td>
+                    <td><input type="button" value="刪除" @@click="deleteProduct(item.ProductId)" /></td>
                 </tr>
             </tbody>
         </table>
@@ -35,7 +39,8 @@
 
         var injectObj = {
             urls: {
-                detailPath:'@Url.Action("Detail","ProductManage")'
+                detailPath: '@Url.Action("Detail","ProductManage")',
+                deletePath: '@Url.Action("DeleteProduct","ProductManage")'
             },
             productList: JSON.parse('@Html.Raw(JsonConvert.SerializeObject(ViewBag.ProductList))'),
         };

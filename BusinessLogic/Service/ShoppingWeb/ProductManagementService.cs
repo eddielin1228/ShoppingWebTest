@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
 using BusinessLogic.Base;
 using BusinessLogic.Interface;
 using DataAccess.Domain;
@@ -51,15 +55,17 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <returns></returns>
         public List<ProductViewModel> GetAll()
         {
-            return base.ProductMainRepository.FindAll().Select(x=>new ProductViewModel {
+            return base.ProductMainRepository.FindAll().Select(x => new ProductViewModel
+            {
                 isBuy = false,
                 ProductId = x.ProductId,
                 ProductName = x.ProductName,
                 Price = x.Price,
                 CanSale = x.CanSale,
                 Count = 0,
-                Quantity = x.Quantity
-            }).ToList();        
+                Quantity = x.Quantity,
+                Address = x.Address
+            }).ToList();
         }
 
         /// <summary>
@@ -69,7 +75,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <returns></returns>
         public ProductViewModel Get(ProductViewModel model)
         {
-            var query =  base.ProductMainRepository.Find(x => x.ProductId== model.ProductId);
+            var query = base.ProductMainRepository.Find(x => x.ProductId == model.ProductId);
             ProductViewModel data = new ProductViewModel()
             {
                 ProductId = query.ProductId,
@@ -88,17 +94,26 @@ namespace BusinessLogic.Service.ShoppingWeb
         public ResponseMessage Create(ProductViewModel model)
         {
             ResponseMessage result = new ResponseMessage();
-            ProductMain product = new ProductMain() {
-                ProductName = model.ProductName,
-                ProductId = model.ProductId,
-                Price = model.Price,
-                Quantity = model.Quantity,
-                CanSale = model.CanSale
-            };
 
-            result.success = base.ProductMainRepository.Add(product);
+            if (model.FileUpload != null)
+            {
+                result = CheckPicture(model);
+            }
 
+            if (result.success)
+            {
+                ProductMain product = new ProductMain()
+                {
+                    ProductName = model.ProductName,
+                    ProductId = model.ProductId,
+                    Price = model.Price,
+                    Quantity = model.Quantity,
+                    CanSale = model.CanSale,
+                    Address = model.Address
+                };
 
+                result.success = base.ProductMainRepository.Add(product);
+            }
             return result;
         }
 
@@ -109,12 +124,23 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <returns></returns>
         public ResponseMessage Update(ProductViewModel model)
         {
-            ResponseMessage result = new ResponseMessage();
-            var oldData = base.ProductMainRepository.Find(x=>x.ProductId==model.ProductId);
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
+            if (model.FileUpload != null)
+            {
+                result = CheckPicture(model);
+            }
+            var oldData = base.ProductMainRepository.Find(x => x.ProductId == model.ProductId);
             oldData.Price = model.Price;
             oldData.ProductName = model.ProductName;
             oldData.Quantity = model.Quantity;
             oldData.CanSale = model.CanSale;
+            if (model.FileUpload != null)
+            {
+                oldData.Address = model.Address;
+            }
             result.success = base.ProductMainRepository.Update(oldData);
             return result;
         }
@@ -141,6 +167,86 @@ namespace BusinessLogic.Service.ShoppingWeb
                 base.Log.SendException("BusinessLogic.Service.ShoppingWeb.OrderManagementService.DeleteProduct()", ex);
             }
             return result;
+        }
+
+        /// <summary>
+        /// 檢查圖片
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private ResponseMessage CheckPicture(ProductViewModel model)
+        {
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
+            //圖片結尾是否為gif|png|jpg|bmp
+            if (!isPicture(model.FileUpload.FileName))
+            {
+                result.success = false;
+                result.Message = "內容不為圖片";
+            }
+            //檔案是否為圖片
+            if (IsImage(model.FileUpload) == null)
+            {
+                result.success = false;
+                result.Message = "檔案不為圖片";
+            }
+            //大小>0byte
+            if (model.FileUpload.ContentLength > 0)
+            {
+                //檔案名
+                var fileName = model.ProductName + ".jpg";
+                string pathString = "/FileUploads/" + model.ProductId;
+                model.Address = pathString + "/" + fileName;
+                //路徑
+                var path = Path.Combine(HttpContext.Current.Server.MapPath(pathString));
+                //路徑加檔案名
+                var pathName = Path.Combine(HttpContext.Current.Server.MapPath(pathString), fileName);
+                //資料夾不存在的話創一個
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                //有此檔名的話把他刪了
+                if (File.Exists(pathName))
+                {
+                    File.Delete(pathName);
+                }
+                Image photo = Image.FromStream(model.FileUpload.InputStream);
+                photo.Save(pathName, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 判斷副檔名是否為圖片檔
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private bool isPicture(string fileName)
+        {
+            string extensionName = fileName.Substring(fileName.LastIndexOf('.') + 1);
+            var reg = new Regex("^(gif|png|jpg|bmp)$", RegexOptions.IgnoreCase);
+            return reg.IsMatch(extensionName);
+        }
+
+        /// <summary>
+        /// 判斷檔案是否為圖片
+        /// </summary>
+        /// <param name="photofile"></param>
+        /// <returns></returns>
+        private Image IsImage(HttpPostedFileBase photofile)
+        {
+            try
+            {
+                Image img = Image.FromStream(photofile.InputStream);
+                return img;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

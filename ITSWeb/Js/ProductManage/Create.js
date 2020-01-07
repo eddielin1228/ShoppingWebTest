@@ -13,11 +13,11 @@
             urls: {
                 createProduct: window.injectObj.urls.createProduct || '',
             },
+            formData: new FormData()
         },
         methods: {
             /*
-            * change table page
-            * @param {} val: 頁碼
+            * 建立商品
             */
             createData: function () {
                 var me = this;
@@ -27,14 +27,14 @@
                     type: 'warning'
                 };
 
+                var formData = me.formData;
+                formData.append('ProductName', me.filter.name);
+                formData.append('Price', me.filter.price);
+                formData.append('Quantity', me.filter.quantity);
+                formData.append('CanSale', me.filter.canSale);
+
                 window.axios.post(me.urls.createProduct,
-                    {
-                        ProductName: me.filter.name,
-                        Price: me.filter.price,
-                        Quantity: me.filter.quantity,
-                        CanSale: me.filter.canSale,
-                        FileUpload: me.filter.fileUpload
-                    }
+                    formData
                 ).then(function (response) {
                     me.resultData = response.data.users;
                     setTimeout(function () { location.reload(); }, 1000);
@@ -62,7 +62,7 @@
                     me.$message(msg);
                     return;
                 }
-                me.filter.fileUpload=file;
+                me.formData.append('FileUpload', file);
             },
         }
     });

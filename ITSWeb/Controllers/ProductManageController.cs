@@ -44,12 +44,21 @@ namespace ITSWeb.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult CreateProduct(ProductViewModel model)
         {
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
             if (model == null)
             {
-                return Json("");
+                result.success = false;
             }
-            model.ProductId = Guid.NewGuid().ToString();
-            ResponseMessage result = productManagementService.Create(model);
+
+            if (result.success)
+            {
+                model.ProductId = Guid.NewGuid().ToString();
+                result = productManagementService.Create(model);
+            }
+
             return Json(result);
         }
         /// <summary>
@@ -76,14 +85,22 @@ namespace ITSWeb.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult UpdateProduct([FromBody]ProductViewModel model)
         {
+            ResponseMessage result = new ResponseMessage()
+            {
+                success = true
+            };
             if (model == null)
             {
-                return Json("");
+                result.success = false;
             }
-            ResponseMessage result = productManagementService.Update(model);
+            result = productManagementService.Update(model);
             return Json(result);
         }
-
+        /// <summary>
+        /// 刪除商品
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public ActionResult DeleteProduct([FromBody]ProductViewModel model)
         {
             ResponseMessage result = new ResponseMessage()
@@ -96,7 +113,7 @@ namespace ITSWeb.Controllers
             }
             if (result.success)
             {
-               result = productManagementService.DeleteProduct(model.ProductId);
+                result = productManagementService.DeleteProduct(model.ProductId);
             }
             return Json(result);
         }

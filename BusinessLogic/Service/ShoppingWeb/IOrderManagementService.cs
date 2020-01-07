@@ -13,10 +13,5 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <returns></returns>
         ResponseMessage CreateOrder(OrderViewModel model);
 
-        /// <summary>
-        /// 取得全部訂單資料
-        /// </summary>
-        /// <returns></returns>
-        List<OrderViewModel> GetAllOrder();
     }
 }

@@ -11,7 +11,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// </summary>
         /// <param name="model">商品資料</param>
         /// <returns></returns>
-        ResponseMessage Create(ProductViewModel model);
+        ResponseMessage CreateProduct(ProductViewModel model);
         /// <summary>
         /// 刪除商品資料
         /// </summary>
@@ -21,19 +21,19 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// 取得單一商品資料
         /// </summary>
-        /// <param name="model">商品資料</param>
+        /// <param name="productId">商品Id</param>
         /// <returns></returns>
-        ProductViewModel Get(ProductViewModel model);
+        ProductViewModel GetProductData(string productId);
         /// <summary>
         /// 取得全部資料
         /// </summary>
         /// <returns></returns>
-        List<ProductViewModel> GetAll();
+        List<ProductViewModel> GetAllProduct();
         /// <summary>
         /// 修改資料
         /// </summary>
         /// <param name="model">商品資料</param>
         /// <returns></returns>
-        ResponseMessage Update(ProductViewModel model);
+        ResponseMessage UpdateProduct(ProductViewModel model);
     }
 }

@@ -47,23 +47,6 @@ namespace BusinessLogic.Service.ShoppingWeb
             base.OrderDetailRepository = orderDetailRepository;
             base.ProductMainRepository = productRepository;
         }
-
-        /// <summary>
-        /// 取得全部訂單資料
-        /// </summary>
-        /// <returns></returns>
-        public List<OrderViewModel> GetAllOrder()
-        {
-            return base.OrderMainRepository.FindAll().Select(x => new OrderViewModel
-            {
-                OrderId = x.OrderId,
-                OrderUser = x.OrderUser,
-                TotalPrice = x.TotalPrice,
-                CreateTime = x.CreateTime,
-                OrderItems = GetOrderDetailList(x.OrderId)
-            }).ToList();
-        }
-
         /// <summary>
         /// 取得訂單明細
         /// </summary>
@@ -100,49 +83,58 @@ namespace BusinessLogic.Service.ShoppingWeb
             {
                 success = true
             };
-
-            model.OrderItems.ForEach(x =>
-            {
-                var product = base.ProductMainRepository.Find(p => p.ProductId == x.ProductId);
-                if ((product.Quantity - x.Count) < 0)
-                {
-                    result.success = false;
-                }
-            });
-
-            if (result.success)
-            {
-                OrderMain orderMain = new OrderMain()
-                {
-                    OrderId = model.OrderId,
-                    TotalPrice = model.TotalPrice,
-                    OrderUser = model.OrderUser,
-                    CreateTime = DateTime.Now,
-                    CreateUser = model.OrderUser
-                };
-
-                result.success = base.OrderMainRepository.Add(orderMain);
-            }
-
-            if (result.success)
+            try
             {
                 model.OrderItems.ForEach(x =>
                 {
                     var product = base.ProductMainRepository.Find(p => p.ProductId == x.ProductId);
-                    product.Quantity -= x.Count;
-                    OrderDetail orderDetail = new OrderDetail
+                    if ((product.Quantity - x.Count) < 0)
+                    {
+                        result.success = false;
+                    }
+                });
+
+                if (result.success)
+                {
+                    OrderMain orderMain = new OrderMain()
                     {
                         OrderId = model.OrderId,
-                        ProductId = x.ProductId,
-                        Quantity = x.Count,
-                        Price = x.Price,
+                        TotalPrice = model.TotalPrice,
+                        OrderUser = model.OrderUser,
                         CreateTime = DateTime.Now,
                         CreateUser = model.OrderUser
                     };
-                    base.OrderDetailRepository.Add(orderDetail);
-                    base.ProductMainRepository.Update(product);
-                });
+
+                    result.success = base.OrderMainRepository.Add(orderMain);
+                }
+
+                if (result.success)
+                {
+                    model.OrderItems.ForEach(x =>
+                    {
+                        var product = base.ProductMainRepository.Find(p => p.ProductId == x.ProductId);
+                        product.Quantity -= x.Count;
+                        OrderDetail orderDetail = new OrderDetail
+                        {
+                            OrderId = model.OrderId,
+                            ProductId = x.ProductId,
+                            Quantity = x.Count,
+                            Price = x.Price,
+                            CreateTime = DateTime.Now,
+                            CreateUser = model.OrderUser
+                        };
+                        base.OrderDetailRepository.Add(orderDetail);
+                        base.ProductMainRepository.Update(product);
+                    });
+                }
             }
+            catch (Exception ex)
+            {
+                base.Log.Error(ex);
+                base.Log.SendException("BusinessLogic.Service.ShoppingWeb.OrderManagementService.CreateOrder()",
+                    ex);
+            }
+
             return result;
         }
     }

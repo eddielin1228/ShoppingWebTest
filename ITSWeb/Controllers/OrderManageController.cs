@@ -17,15 +17,6 @@ namespace ITSWeb.Controllers
             orderManagementService = new OrderManagementService();
         }
         /// <summary>
-        /// 訂單列表(未實作)
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
-        {
-            ViewBag.ProductList = orderManagementService.GetAllOrder();
-            return View();
-        }
-        /// <summary>
         /// 訂單畫面
         /// </summary>
         /// <returns></returns>

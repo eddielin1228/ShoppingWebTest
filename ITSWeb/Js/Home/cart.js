@@ -20,8 +20,8 @@
         },
         methods: {
             /*
-            * change table page
-            * @param {} val: 頁碼
+            * 轉頁至商品資料修改
+            * @param {} productId: 商品ID
             */
             detailPath: function (productId) {
                 var me = this;
@@ -32,6 +32,9 @@
                 };
                 location.href = me.urls.detailPath + '?productId=' + productId;
             },
+            /*
+            * 加入購物車
+            */
             addCart: function () {
                 var me = this;
                 me.productList.forEach(x => {

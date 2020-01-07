@@ -24,7 +24,7 @@ namespace ITSWeb.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            ViewBag.ProductList = productManagementService.GetAll();
+            ViewBag.ProductList = productManagementService.GetAllProduct();
 
             return View();
         }
@@ -56,7 +56,7 @@ namespace ITSWeb.Controllers
             if (result.success)
             {
                 model.ProductId = Guid.NewGuid().ToString();
-                result = productManagementService.Create(model);
+                result = productManagementService.CreateProduct(model);
             }
 
             return Json(result);
@@ -68,11 +68,7 @@ namespace ITSWeb.Controllers
         /// <returns></returns>
         public ActionResult Detail(string productId)
         {
-            ProductViewModel model = new ProductViewModel()
-            {
-                ProductId = productId
-            };
-            ViewBag.ProductList = productManagementService.Get(model);
+            ViewBag.ProductList = productManagementService.GetProductData(productId);
 
             return View();
         }
@@ -93,7 +89,7 @@ namespace ITSWeb.Controllers
             {
                 result.success = false;
             }
-            result = productManagementService.Update(model);
+            result = productManagementService.UpdateProduct(model);
             return Json(result);
         }
         /// <summary>

@@ -53,9 +53,9 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// 取得全部資料
         /// </summary>
         /// <returns></returns>
-        public List<ProductViewModel> GetAll()
+        public List<ProductViewModel> GetAllProduct()
         {
-            return base.ProductMainRepository.FindAll().Select(x => new ProductViewModel
+            var query = base.ProductMainRepository.FindAll().Select(x => new ProductViewModel
             {
                 isBuy = false,
                 ProductId = x.ProductId,
@@ -66,23 +66,26 @@ namespace BusinessLogic.Service.ShoppingWeb
                 Quantity = x.Quantity,
                 Address = x.Address
             }).ToList();
+
+            return query;
         }
 
         /// <summary>
         /// 取得單一商品資料
         /// </summary>
-        /// <param name="model">商品資料</param>
+        /// <param name="productId">商品Id</param>
         /// <returns></returns>
-        public ProductViewModel Get(ProductViewModel model)
+        public ProductViewModel GetProductData(string productId)
         {
-            var query = base.ProductMainRepository.Find(x => x.ProductId == model.ProductId);
+            var query = base.ProductMainRepository.Find(x => x.ProductId == productId);
             ProductViewModel data = new ProductViewModel()
             {
                 ProductId = query.ProductId,
                 ProductName = query.ProductName,
                 Price = query.Price,
                 CanSale = query.CanSale,
-                Quantity = query.Quantity
+                Quantity = query.Quantity,
+                Address = query.Address
             };
             return data;
         }
@@ -91,28 +94,39 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// </summary>
         /// <param name="model">商品資料</param>
         /// <returns></returns>
-        public ResponseMessage Create(ProductViewModel model)
+        public ResponseMessage CreateProduct(ProductViewModel model)
         {
-            ResponseMessage result = new ResponseMessage();
-
-            if (model.FileUpload != null)
+            ResponseMessage result = new ResponseMessage()
             {
-                result = CheckPicture(model);
-            }
-
-            if (result.success)
+                success = true
+            };
+            try
             {
-                ProductMain product = new ProductMain()
+                if (model.FileUpload != null)
                 {
-                    ProductName = model.ProductName,
-                    ProductId = model.ProductId,
-                    Price = model.Price,
-                    Quantity = model.Quantity,
-                    CanSale = model.CanSale,
-                    Address = model.Address
-                };
+                    result = CheckPicture(model);
+                }
 
-                result.success = base.ProductMainRepository.Add(product);
+                if (result.success)
+                {
+                    ProductMain product = new ProductMain()
+                    {
+                        ProductName = model.ProductName,
+                        ProductId = model.ProductId,
+                        Price = model.Price,
+                        Quantity = model.Quantity,
+                        CanSale = model.CanSale,
+                        Address = model.Address
+                    };
+
+                    result.success = base.ProductMainRepository.Add(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                base.Log.Error(ex);
+                base.Log.SendException("BusinessLogic.Service.ShoppingWeb.ProductManagementService.CreateProduct()",
+                    ex);
             }
             return result;
         }
@@ -122,26 +136,35 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// </summary>
         /// <param name="model">商品資料</param>
         /// <returns></returns>
-        public ResponseMessage Update(ProductViewModel model)
+        public ResponseMessage UpdateProduct(ProductViewModel model)
         {
             ResponseMessage result = new ResponseMessage()
             {
                 success = true
             };
-            if (model.FileUpload != null)
+            try
             {
-                result = CheckPicture(model);
+                if (model.FileUpload != null)
+                {
+                    result = CheckPicture(model);
+                }
+                var oldData = base.ProductMainRepository.Find(x => x.ProductId == model.ProductId);
+                oldData.Price = model.Price;
+                oldData.ProductName = model.ProductName;
+                oldData.Quantity = model.Quantity;
+                oldData.CanSale = model.CanSale;
+                if (model.FileUpload != null)
+                {
+                    oldData.Address = model.Address;
+                }
+                result.success = base.ProductMainRepository.Update(oldData);
             }
-            var oldData = base.ProductMainRepository.Find(x => x.ProductId == model.ProductId);
-            oldData.Price = model.Price;
-            oldData.ProductName = model.ProductName;
-            oldData.Quantity = model.Quantity;
-            oldData.CanSale = model.CanSale;
-            if (model.FileUpload != null)
+            catch (Exception ex)
             {
-                oldData.Address = model.Address;
+                base.Log.Error(ex);
+                base.Log.SendException("BusinessLogic.Service.ShoppingWeb.ProductManagementService.UpdateProduct()",
+                    ex);
             }
-            result.success = base.ProductMainRepository.Update(oldData);
             return result;
         }
 

@@ -18,7 +18,7 @@ namespace ITSWeb.Controllers
         }
         public ActionResult Index()
         {
-            var data = productManagementService.GetAll().Where(x=>x.CanSale).ToList();
+            var data = productManagementService.GetAllProduct().Where(x=>x.CanSale).ToList();
 
             ViewBag.ProductList = data;
 

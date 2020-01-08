@@ -53,6 +53,7 @@
                 }
                 if (file.size > 4194304) {
                     alert("檔案不得超過4MB");
+                    me.filter.address = '';
                     return;
                 }
                 if (file !== 'undefined' && file.name.indexOf('.') === -1) {

@@ -21,7 +21,7 @@
         <div>
             <div class="input-title">檔案上傳</div>
             <div class="input-group">
-                <label class="file"><input id="fileUpload" v-on:change="onUploadChange($event)" onchange="this.parentNode.setAttribute('title', this.value.replace(/^.*[\\/]/, ''))" type="file"></label>
+                <label class="file"><input id="fileUpload" v-on:change="onUploadChange($event)" v-model="filter.address" onchange="this.parentNode.setAttribute('title', this.value.replace(/^.*[\\/]/, ''))" type="file"></label>
             </div>
         </div>
         <input type="button" value="送出" @@click="createData" />

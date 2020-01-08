@@ -23,15 +23,12 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// <summary>
         /// ProductManagementService
         /// </summary>
-
-        private readonly DbContext _dbContext;
-
         public ProductManagementService()
         {
-            _dbContext = new ShoppingWebContext();
-            _dbContext.Configuration.ProxyCreationEnabled = false;
-            _dbContext.Configuration.LazyLoadingEnabled = false;
-            base.ProductMainRepository = new GenericRepository<ProductMain>(_dbContext);
+            DbContext dbContext = new ShoppingWebContext();
+            dbContext.Configuration.ProxyCreationEnabled = false;
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            base.ProductMainRepository = new GenericRepository<ProductMain>(dbContext);
         }
 
         /// <summary>

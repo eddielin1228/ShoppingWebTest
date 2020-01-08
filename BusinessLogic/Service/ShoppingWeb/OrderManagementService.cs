@@ -20,19 +20,17 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// OrderManagementService
         /// </summary>
 
-        private readonly DbContext _dbContext;
-
         /// <summary>
         /// 初始化
         /// </summary>
         public OrderManagementService()
         {
-            _dbContext = new ShoppingWebContext();
-            _dbContext.Configuration.ProxyCreationEnabled = false;
-            _dbContext.Configuration.LazyLoadingEnabled = false;
-            base.OrderMainRepository = new GenericRepository<OrderMain>(_dbContext);
-            base.OrderDetailRepository = new GenericRepository<OrderDetail>(_dbContext);
-            base.ProductMainRepository = new GenericRepository<ProductMain>(_dbContext);
+            DbContext dbContext = new ShoppingWebContext();
+            dbContext.Configuration.ProxyCreationEnabled = false;
+            dbContext.Configuration.LazyLoadingEnabled = false;
+            base.OrderMainRepository = new GenericRepository<OrderMain>(dbContext);
+            base.OrderDetailRepository = new GenericRepository<OrderDetail>(dbContext);
+            base.ProductMainRepository = new GenericRepository<ProductMain>(dbContext);
         }
 
         /// <summary>

@@ -230,7 +230,6 @@
     <Compile Include="Controllers\ProductManageController.cs" />
     <Compile Include="Controllers\Identity\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Identity\ManageController.cs" />
     <Compile Include="Filter\AjaxValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Filter\CompressFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">

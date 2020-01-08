@@ -21,7 +21,7 @@ namespace BusinessLogic.Service.ShoppingWeb
     public class ProductManagementService : ShoppingWebDataBase, IProductManagementService
     {
         /// <summary>
-        /// SampleService
+        /// ProductManagementService
         /// </summary>
 
         private readonly DbContext _dbContext;

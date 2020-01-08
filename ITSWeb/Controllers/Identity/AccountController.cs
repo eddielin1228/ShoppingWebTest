@@ -356,7 +356,6 @@ namespace ITSWeb.Controllers.Identity
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Manage");
             }
 
             if (ModelState.IsValid)

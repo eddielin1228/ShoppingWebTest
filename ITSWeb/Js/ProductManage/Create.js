@@ -46,8 +46,13 @@
              */
             onUploadChange(event) {
                 var file = event.target.files[0];
+                console.log(file);
                 var me = this;
                 if (!file) {
+                    return;
+                }
+                if (file.size > 4194304) {
+                    alert("檔案不得超過4MB");
                     return;
                 }
                 if (file !== 'undefined' && file.name.indexOf('.') === -1) {

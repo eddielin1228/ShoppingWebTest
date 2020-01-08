@@ -85,10 +85,6 @@
     <Compile Include="Base\SampleDataBase.cs" />
     <Compile Include="Interface\EmailSenderBase.cs" />
     <Compile Include="Interface\ILog.cs" />
-    <Compile Include="Interface\IOrderDetailRepository.cs" />
-    <Compile Include="Interface\IOrderMainRepository.cs" />
-    <Compile Include="Interface\IUserDataRepository.cs" />
-    <Compile Include="Interface\IProductMainRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\SampleSystem\SampleService.cs" />
     <Compile Include="Infrastructure\Log.cs" />

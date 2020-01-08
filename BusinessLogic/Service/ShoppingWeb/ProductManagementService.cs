@@ -24,8 +24,7 @@ namespace BusinessLogic.Service.ShoppingWeb
         /// SampleService
         /// </summary>
 
-        protected readonly DbContext _dbContext;
-
+        private readonly DbContext _dbContext;
 
         public ProductManagementService()
         {

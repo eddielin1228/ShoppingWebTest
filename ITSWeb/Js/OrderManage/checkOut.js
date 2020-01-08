@@ -12,8 +12,7 @@
         },
         methods: {
             /*
-            * change table page
-            * @param {} val: 頁碼
+            * 寫入訂單
             */
             checkout: function () {
                 var me = this;
@@ -24,9 +23,7 @@
                     }
                 ).then(function (response) {
                     if (response.data.success) {
-                        alert("訂單完成");
                         me.deleteCart();
-                        location.href = me.urls.homePath;
                     } else {
                         alert(response.data.message);
                     }
@@ -53,4 +50,5 @@
         }
     });
     app.getTotalPrice();
+    app.checkout();
 })();

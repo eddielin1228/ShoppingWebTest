@@ -28,8 +28,12 @@
                 console.log(canAddCart);
                 if (canAddCart) {
                     window.localStorage.setItem("cartList", JSON.stringify(me.cartList).toString());
-                    alert("已加入購物車");
-                    setTimeout(function () { location.reload(); }, 1000);
+                    if (me.cartList.length > 0) {
+                        alert("已加入購物車");
+                        setTimeout(function () { location.reload(); }, 1000);
+                    } else {
+                        alert("無可加入購物車之商品");
+                    }
                 } else {
                     alert("訂購數量不可為0或大於庫存數量");
                 }
